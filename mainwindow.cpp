@@ -16,12 +16,13 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_btnCriarBD_clicked()
 {
-
+    // Config basica para abertura da base de dados com a classe
     string filename = "database.db";
     string password = "senha";
 
     QSQLCipherClass db(filename, password);
 
+    // Execução da query para criar a base de dados e inserir dados
     if (db.executeQuery("CREATE TABLE Heroi (id INTEGER PRIMARY KEY, nome TEXT, sobrenome TEXT)"))
     {
         db.executeQuery("INSERT INTO Heroi VALUES(1, 'Luke', 'Skywalker');"
@@ -36,26 +37,33 @@ void MainWindow::on_btnCriarBD_clicked()
         ui->lblResultado->setText("Base de dados já existe!");
     }
 
+    // Fechar a base de dados
     db.~QSQLCipherClass();
 }
 
 
 void MainWindow::on_btnImprimir_clicked()
 {
-//    QSQLCipherClass db("database.db", "senha");
-//    qDebug() << db.executeQuery("SELECT * FROM Heroi");
+// Retorna um bool
+//  QSQLCipherClass db("database.db", "senha");
+//  qDebug() << db.executeQuery("SELECT * FROM Heroi");
 
+    // Configuração básica para abertura da base de dados com a classe
     sqlite3* db;
 
     sqlite3_open("database.db", &db);
     sqlite3_key(db, "senha", 5);
 
+    // Execução da query para apresentar os dados
     const char* query = "SELECT * FROM Heroi";
 
+    // Ponteiro statement para trazer a instrução SQL compilada
     sqlite3_stmt* stmt;
 
+    // Compilar e trazer a instrução SQL
     sqlite3_prepare_v2(db, query, -1, &stmt, nullptr);
 
+    // Ciclo para buscar as informações e apresentar via terminal (com o qDebug)
     while (sqlite3_step(stmt) == SQLITE_ROW) {
         int column1Value = sqlite3_column_int(stmt, 0);
         const char* column2Value = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
@@ -67,6 +75,7 @@ void MainWindow::on_btnImprimir_clicked()
         qDebug() << "----------------------------";
     }
 
+    // Fechar a base de dados SQLCipher
     sqlite3_finalize(stmt);
     sqlite3_close(db);
 
@@ -76,11 +85,10 @@ void MainWindow::on_btnImprimir_clicked()
 void MainWindow::on_btnTabela_clicked()
 {
     sqlite3* db;
-
     sqlite3_open("database.db", &db);
     sqlite3_key(db, "senha", 5);
 
-    // Execute sua consulta SQL usando o SQLCipher API (por exemplo, SELECT * FROM sua_tabela;)
+    // Execute sua consulta SQL usando o SQLCipher API
     const char* selectQuery = "SELECT * FROM Heroi";
     sqlite3_stmt* stmt;
     sqlite3_prepare_v2(db, selectQuery, -1, &stmt, nullptr);
@@ -105,18 +113,20 @@ void MainWindow::on_btnTabela_clicked()
         model->appendRow(rowData);
     }
 
-    // Fechar o banco de dados SQLCipher
+    // Fechar a base de dados SQLCipher
     sqlite3_finalize(stmt);
     sqlite3_close(db);
 
-    // Exibir a QTableView
-//    model->setHeaderData(0, Qt::Horizontal, "ID");
-//    model->setHeaderData(1, Qt::Horizontal, "NOME");
-//    model->setHeaderData(2, Qt::Horizontal, "SOBRENOME");
-    model->dataChanged(QModelIndex(), QModelIndex());
+
+// Caso queria renomear as colunas
+//  model->setHeaderData(0, Qt::Horizontal, "ID");
+//  model->setHeaderData(1, Qt::Horizontal, "NOME");
+//  model->setHeaderData(2, Qt::Horizontal, "SOBRENOME");
+
+    // Exibir a QTableView, utilizando o emit
+    emit model->dataChanged(QModelIndex(), QModelIndex());
     ui->tbvTabela->setModel(model);
     ui->tbvTabela->resizeColumnsToContents();
-
     ui->tbvTabela->show();
 
 }
