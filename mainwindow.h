@@ -3,6 +3,7 @@
 
 #define SQLITE_HAS_CODEC
 
+#include "qsqlcipherclass.h"
 #include <iostream>
 #include <sqlcipher/sqlite3.h>
 #include <QDebug>
@@ -34,8 +35,6 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    static int imprimir(void* dados, int qt, char** linha, char** coluna);
-
 private slots:
     void on_btnCriarBD_clicked();
 
@@ -46,5 +45,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QStandardItemModel* model;
+    QSQLCipherClass* tabela;
 };
 #endif // MAINWINDOW_H
