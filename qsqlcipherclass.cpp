@@ -1,47 +1,126 @@
 #include "qsqlcipherclass.h"
 
-QSQLCipherClass::QSQLCipherClass(const string& filename, const string& password)
-    : db(nullptr)
+// Construtor para abrir a base de dados e inserir a palavra passe
+QSQLCipherClass::QSQLCipherClass(const QString& filename, const QString& password)
 {
-    int rc = sqlite3_open(filename.c_str(), &db);
-    if (rc == SQLITE_OK)
-    {
-        // Define a senha para o banco de dados
-        sqlite3_key(db, password.c_str(), password.length());
-    }
-    else
-    {
-        qDebug("Erro ao abrir o banco de dados: %s\n", sqlite3_errmsg(db));
-        db = nullptr;
-    }
+    model = new QStandardItemModel();
+    db = filename;
+
+    sqlite3_open(db.toStdString().c_str(), &dbHandle);
+    sqlite3_key(dbHandle, password.toStdString().c_str(), password.length());
 }
 
-QSQLCipherClass::~QSQLCipherClass()
+// Para fechar a base de dados
+void QSQLCipherClass::closeDB()
 {
-    if (db)
-    {
-        sqlite3_close(db);
-    }
+    sqlite3_close(dbHandle);
 }
 
-bool QSQLCipherClass::executeQuery(const string& query)
+// Para criar a base de dados
+void QSQLCipherClass::createDB(const QString& query)
 {
-    if (!db)
-    {
-        qDebug("Banco de dados não aberto\n");
-            return false;
-    }
-
-    char* errorMsg = nullptr;
-    int rc = sqlite3_exec(db, query.c_str(), nullptr, nullptr, &errorMsg);
-    if (rc != SQLITE_OK)
-    {
-        qDebug("Erro ao executar a consulta: %s\n", errorMsg);
-        sqlite3_free(errorMsg);
-        return false;
-    }
-
-    return true;
+    sqlite3_exec(dbHandle, query.toStdString().c_str(), nullptr, nullptr, nullptr);
 }
 
+// Para manipular o apontador para base de dados
+sqlite3* QSQLCipherClass::getDbHandle() const
+{
+    return dbHandle;
+}
 
+// Para de fato executar uma query
+QPair<QStringList, QList<QList<QVariant>>> QSQLCipherClass::executeQuery(const QString& query)
+{
+    QStringList columnNames;
+    QList<QList<QVariant>> results;
+
+    // Prepara o statement
+    sqlite3_stmt* stmt = nullptr;
+    sqlite3_prepare_v2(dbHandle, query.toStdString().c_str(), -1, &stmt, nullptr);
+
+    // Busca os nomes das colunas no statement
+    int columnCount = sqlite3_column_count(stmt);
+    for (int i = 0; i < columnCount; ++i) {
+        const char* columnName = sqlite3_column_name(stmt, i);
+        columnNames.append(QString::fromUtf8(columnName));
+    }
+
+    // Executa a query e faz fetch dos resultados
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        QList<QVariant> row;
+        for (int i = 0; i < columnCount; ++i) {
+            int columnType = sqlite3_column_type(stmt, i);
+
+            switch (columnType) {
+            case SQLITE_INTEGER:
+                row.append(sqlite3_column_int(stmt, i));
+                break;
+            case SQLITE_TEXT: {
+                const char* text = reinterpret_cast<const char*>(sqlite3_column_text(stmt, i));
+                row.append(QString::fromUtf8(text));
+                break;
+            }
+            case SQLITE_FLOAT:
+                row.append(sqlite3_column_double(stmt, i));
+                break;
+            case SQLITE_BLOB: {
+                int dataSize = sqlite3_column_bytes(stmt, i);
+                const void* blobData = sqlite3_column_blob(stmt, i);
+                row.append(QByteArray(static_cast<const char*>(blobData), dataSize));
+                break;
+            }
+            case SQLITE_NULL:
+                row.append(QVariant());
+                break;
+            default:
+                // Caso precise
+                row.append(QVariant());
+                break;
+            }
+        }
+
+        results.append(row);
+    }
+
+    // Finaliza o statement preparado
+    sqlite3_finalize(stmt);
+
+    return qMakePair(columnNames, results);
+}
+
+QStandardItemModel* QSQLCipherClass::prepareModel(const QStringList& columnNames, const QList<QList<QVariant>>& results)
+{
+    QStandardItemModel* model = new QStandardItemModel();
+
+    // Configura os nomes das colunas no modelo
+    model->setHorizontalHeaderLabels(columnNames);
+
+    // Preenche o modelo com os dados vindos do resultado da query
+    for (const QList<QVariant>& row : results) {
+        QList<QStandardItem*> items;
+        for (const QVariant& columnData : row) {
+            QStandardItem* item = new QStandardItem(columnData.toString());
+            items.append(item);
+        }
+        model->appendRow(items);
+    }
+
+    return model;
+}
+
+QStandardItemModel* QSQLCipherClass::prepareAndShowTable(const QString& filename, const QString& password, const QString& query)
+{
+     // Necessário para buscar os resultados da execução da query
+    QSQLCipherClass db(filename, password);
+
+    // Necessário para buscar os resultados da execução da query
+    QPair<QStringList, QList<QList<QVariant>>> queryResult = db.executeQuery(query);
+    const QStringList& columnNames = queryResult.first;
+    const QList<QList<QVariant>>& results = queryResult.second;
+
+    // Prepara o modelo a partir dos resultados da query
+    QStandardItemModel* model = prepareModel(columnNames, results);
+
+    // Retorna o modelo, se desejar usá-lo em outras partes do código
+    return model;
+}
