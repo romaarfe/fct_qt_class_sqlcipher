@@ -86,13 +86,13 @@ void MainWindow::on_btnTabela_clicked()
     sqlite3_prepare_v2(db, selectQuery, -1, &stmt, nullptr);
 
     // Criar o modelo de itens para a QTableView
-    QStandardItemModel model;
+    model = new QStandardItemModel(this);
 
     // Carregar os dados do cabeçalho da tabela
     int columnCount = sqlite3_column_count(stmt);
     for (int i = 0; i < columnCount; ++i) {
         const char* columnName = sqlite3_column_name(stmt, i);
-        model.setHorizontalHeaderItem(i, new QStandardItem(QString::fromUtf8(columnName)));
+        model->setHorizontalHeaderItem(i, new QStandardItem(QString::fromUtf8(columnName)));
     }
 
     // Carregar os dados das linhas
@@ -102,7 +102,7 @@ void MainWindow::on_btnTabela_clicked()
             const char* columnValue = reinterpret_cast<const char*>(sqlite3_column_text(stmt, i));
             rowData.append(new QStandardItem(QString::fromUtf8(columnValue)));
         }
-        model.appendRow(rowData);
+        model->appendRow(rowData);
     }
 
     // Fechar o banco de dados SQLCipher
@@ -110,7 +110,14 @@ void MainWindow::on_btnTabela_clicked()
     sqlite3_close(db);
 
     // Exibir a QTableView
-    ui->tbvTabela->setModel(&model);
+//    model->setHeaderData(0, Qt::Horizontal, "ID");
+//    model->setHeaderData(1, Qt::Horizontal, "NOME");
+//    model->setHeaderData(2, Qt::Horizontal, "SOBRENOME");
+    model->dataChanged(QModelIndex(), QModelIndex());
+    ui->tbvTabela->setModel(model);
+    ui->tbvTabela->resizeColumnsToContents();
+
+    ui->tbvTabela->show();
 
 }
 

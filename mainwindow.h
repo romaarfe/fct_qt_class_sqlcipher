@@ -45,5 +45,6 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    QStandardItemModel* model;
 };
 #endif // MAINWINDOW_H
