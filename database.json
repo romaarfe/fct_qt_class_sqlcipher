@@ -1,0 +1,22 @@
+[
+    {
+        "id": "1",
+        "nome": "Luke",
+        "sobrenome": "Skywalker"
+    },
+    {
+        "id": "2",
+        "nome": "Leia",
+        "sobrenome": "Organa"
+    },
+    {
+        "id": "3",
+        "nome": "Han",
+        "sobrenome": "Solo"
+    },
+    {
+        "id": "4",
+        "nome": "Obiwan",
+        "sobrenome": "Kenobi"
+    }
+]

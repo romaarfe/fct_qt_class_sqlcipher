@@ -6,30 +6,38 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+    // Configura a interface de utilizador definida no arquivo .ui
     ui->setupUi(this);
+
+    // Conectando o clique do botão ao slot on_btnShowJson_clicked
+    connect(ui->btnShowJson, &QPushButton::clicked, this, &MainWindow::on_btnShowJson_clicked);
 }
 
 MainWindow::~MainWindow()
 {
+    // Libera a memória alocada para a interface de usuário
     delete ui;
 }
 
 void MainWindow::on_btnCriarBD_clicked()
 {
-    // Config basica para abertura da base de dados com a classe
+    // Configuração básica para abertura da base de dados com a classe
     QString filename = "database.db";
     QString password = "senha";
 
+    // Cria uma instância da classe QSQLCipherClass para interagir com a base de dados
     QSQLCipherClass db(filename, password);
 
     // Execução da query para criar a base de dados e inserir dados
     db.executeQuery("CREATE TABLE IF NOT EXISTS Heroi (id INTEGER PRIMARY KEY, nome TEXT, sobrenome TEXT)");
 
+    // Insere dados na tabela Heroi
     db.executeQuery("INSERT INTO Heroi VALUES(1, 'Luke', 'Skywalker')");
     db.executeQuery("INSERT INTO Heroi VALUES(2, 'Leia', 'Organa')");
     db.executeQuery("INSERT INTO Heroi VALUES(3, 'Han', 'Solo')");
     db.executeQuery("INSERT INTO Heroi VALUES(4, 'Obiwan', 'Kenobi')");
 
+    // Exibe uma mensagem de sucesso na interface do usuário
     ui->lblResultado->setText("Base de dados criada com sucesso!");
 
     // Fechar a base de dados
@@ -57,7 +65,7 @@ void printRow(const QStringList& row, const QList<int>& columnWidths) {
 
 void MainWindow::on_btnImprimir_clicked()
 {
-    // Construtor básico
+    // Criação de uma instância da classe QSQLCipherClass para interagir com a base de dados
     QSQLCipherClass db("database.db", "senha");
 
     // Necessário para buscar os resultados da execução da query
@@ -65,13 +73,13 @@ void MainWindow::on_btnImprimir_clicked()
     const QStringList& columnNames = queryResult.first;
     const QList<QList<QVariant>>& results = queryResult.second;
 
-    // Pega os nomes das colunas já limpos
+    // Pega os nomes das colunas já limpos (removendo as aspas, se houver)
     QStringList cleanedColumnNames = columnNames;
     for (QString& columnName : cleanedColumnNames) {
         removeQuotes(columnName);
     }
 
-    // Dimensiona o tamanho/espaçamento das/entre as colunas
+    // Dimensiona o tamanho/espaçamento das/entre as colunas para uma apresentação tabular
     QList<int> columnWidths;
     for (int i = 0; i < cleanedColumnNames.size(); ++i) {
         int maxWidth = cleanedColumnNames.at(i).length();
@@ -99,37 +107,60 @@ void MainWindow::on_btnImprimir_clicked()
 
 void MainWindow::on_btnTabela_clicked()
 {
+    // Configuração básica para abertura da base de dados com a classe
     QString filename = "database.db";
     QString password = "senha";
     QString query = "SELECT * FROM Heroi";
 
+    // Prepara e exibe a tabela na QTableView da interface
     model = tabela->prepareAndShowTable(filename, password, query);
 
-    // Cria efetivamente apresentação na QTableView
+    // Exibe o modelo na QTableView
     ui->tbvTabela->setModel(model);
 
-    // Apresenta na QTableView
+    // Apresenta a QTableView na interface
     ui->tbvTabela->show();
 }
 
 void MainWindow::on_btnJson_clicked()
 {
+    // Configuração básica para abertura da base de dados com a classe
     QString filename = "database.db";
     QString password = "senha";
     QString query = "SELECT * FROM Heroi";
 
+    // Prepara o modelo e converte-o em JSON
     QStandardItemModel* model = tabela->prepareAndShowTable(filename, password, query);
     QJsonDocument jsonDoc = tabela->convertModelToJson(model);
 
     // Agora você pode usar o JSON conforme necessário:
     QByteArray jsonData = jsonDoc.toJson();
 
-    // Salvar em um arquivo, enviar pela rede, etc.
+    // Salvar num ficheiro, enviar pela rede, etc.
     QString fileName = "database.json";
     QFile file(fileName);
     if (file.open(QIODevice::WriteOnly)) {
         file.write(jsonData);
         file.close();
     }
+}
+
+void MainWindow::on_btnShowJson_clicked()
+{
+    // Configuração básica para abertura da base de dados com a classe
+    QString filename = "database.db";
+    QString password = "senha";
+    QString query = "SELECT * FROM Heroi";
+
+    // Prepara o modelo e converte-o em JSON
+    QStandardItemModel* model = tabela->prepareAndShowTable(filename, password, query);
+    QJsonDocument jsonDoc = tabela->convertModelToJson(model);
+
+    // Convertendo o JSON para uma string formatada
+    QByteArray jsonData = jsonDoc.toJson(QJsonDocument::Indented);
+    QString jsonString = QString::fromUtf8(jsonData);
+
+    // Exibindo o JSON no QTextEdit da interface
+    ui->textEdit->setPlainText(jsonString);
 }
 

@@ -10,7 +10,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
-find_package(Qt6 COMPONENTS Core REQUIRED)
+find_package(Qt6 COMPONENTS Core Core Widgets Network WebEngineWidgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 set(PROJECT_SOURCES
@@ -47,7 +47,7 @@ endif()
 
 #add_library(QSQLCipherClass qsqlcipherclass.cpp)
 
-target_link_libraries(QSQLCipherClass PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(QSQLCipherClass PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Network Qt${QT_VERSION_MAJOR}::WebEngineWidgets)
 target_link_libraries(QSQLCipherClass PRIVATE sqlcipher)
 
 

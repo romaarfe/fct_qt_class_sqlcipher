@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>630</width>
-    <height>361</height>
+    <width>677</width>
+    <height>587</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,8 +15,14 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="5" column="1" colspan="2">
-     <widget class="QTableView" name="tbvTabela"/>
+    <item row="7" column="2">
+     <widget class="QPlainTextEdit" name="textEdit">
+      <property name="font">
+       <font>
+        <bold>true</bold>
+       </font>
+      </property>
+     </widget>
     </item>
     <item row="1" column="2">
      <widget class="QPushButton" name="btnImprimir">
@@ -27,18 +33,6 @@
       </property>
       <property name="text">
        <string>MOSTRAR NO TERMINAL</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="1">
-     <widget class="QLabel" name="lblResultado">
-      <property name="font">
-       <font>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Resultado</string>
       </property>
      </widget>
     </item>
@@ -54,7 +48,40 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="2">
+    <item row="6" column="1">
+     <widget class="QLabel" name="lblResultado">
+      <property name="font">
+       <font>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Resultado</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1" colspan="2">
+     <widget class="QPushButton" name="btnTabela">
+      <property name="font">
+       <font>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>MOSTRAR BASE DE DADOS NA TABELA</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="1">
+     <widget class="QTableView" name="tbvTabela">
+      <property name="font">
+       <font>
+        <bold>true</bold>
+       </font>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1">
      <widget class="QPushButton" name="btnJson">
       <property name="font">
        <font>
@@ -66,15 +93,15 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="1">
-     <widget class="QPushButton" name="btnTabela">
+    <item row="5" column="2">
+     <widget class="QPushButton" name="btnShowJson">
       <property name="font">
        <font>
         <bold>true</bold>
        </font>
       </property>
       <property name="text">
-       <string>MOSTRAR BASE DE DADOS NA TABELA</string>
+       <string>ENVIAR JSON</string>
       </property>
      </widget>
     </item>
