@@ -11,15 +11,9 @@ QSQLCipherClass::QSQLCipherClass(const QString& filename, const QString& passwor
 }
 
 // Para fechar a base de dados
-void QSQLCipherClass::closeDB()
+void QSQLCipherClass::closeDb()
 {
     sqlite3_close(dbHandle);
-}
-
-// Para criar a base de dados
-void QSQLCipherClass::createDB(const QString& query)
-{
-    sqlite3_exec(dbHandle, query.toStdString().c_str(), nullptr, nullptr, nullptr);
 }
 
 // Para manipular o apontador para base de dados
@@ -123,4 +117,26 @@ QStandardItemModel* QSQLCipherClass::prepareAndShowTable(const QString& filename
 
     // Retorna o modelo, se desejar usá-lo em outras partes do código
     return model;
+}
+
+
+QJsonDocument QSQLCipherClass::convertModelToJson(QStandardItemModel* model)
+{
+    QJsonArray jsonArray;
+    const int rowCount = model->rowCount();
+    const int columnCount = model->columnCount();
+
+    for (int row = 0; row < rowCount; ++row) {
+        QJsonObject jsonObject;
+        for (int col = 0; col < columnCount; ++col) {
+            QModelIndex index = model->index(row, col);
+            QString fieldName = model->headerData(col, Qt::Horizontal).toString();
+            QVariant fieldValue = model->data(index);
+            jsonObject[fieldName] = QJsonValue::fromVariant(fieldValue);
+        }
+        jsonArray.append(jsonObject);
+    }
+
+    QJsonDocument jsonDoc(jsonArray);
+    return jsonDoc;
 }

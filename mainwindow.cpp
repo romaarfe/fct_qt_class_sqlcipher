@@ -33,7 +33,7 @@ void MainWindow::on_btnCriarBD_clicked()
     ui->lblResultado->setText("Base de dados criada com sucesso!");
 
     // Fechar a base de dados
-    db.closeDB();
+    db.closeDb();
 }
 
 // Para remover as aspas
@@ -110,5 +110,26 @@ void MainWindow::on_btnTabela_clicked()
 
     // Apresenta na QTableView
     ui->tbvTabela->show();
+}
+
+void MainWindow::on_btnJson_clicked()
+{
+    QString filename = "database.db";
+    QString password = "senha";
+    QString query = "SELECT * FROM Heroi";
+
+    QStandardItemModel* model = tabela->prepareAndShowTable(filename, password, query);
+    QJsonDocument jsonDoc = tabela->convertModelToJson(model);
+
+    // Agora você pode usar o JSON conforme necessário:
+    QByteArray jsonData = jsonDoc.toJson();
+
+    // Salvar em um arquivo, enviar pela rede, etc.
+    QString fileName = "database.json";
+    QFile file(fileName);
+    if (file.open(QIODevice::WriteOnly)) {
+        file.write(jsonData);
+        file.close();
+    }
 }
 

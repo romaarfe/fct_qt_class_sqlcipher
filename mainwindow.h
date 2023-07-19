@@ -9,17 +9,9 @@
 #include <QDebug>
 #include <QApplication>
 #include <QMainWindow>
-#include <QtSql/QSqlDatabase>
-#include <QtSql/QSqlQuery>
-#include <QtSql/QSqlQueryModel>
-#include <QtSql/QSqlTableModel>
-#include <QMessageBox>
-#include <QApplication>
-#include <QtSql/QSqlRecord>
-#include <QtSql/QSqlError>
-#include <QStandardItemModel>
-#include <QTableView>
-#include <QDialog>
+#include <QList>
+#include <QVariant>
+#include <QFile>
 
 using namespace std;
 
@@ -41,6 +33,8 @@ private slots:
     void on_btnImprimir_clicked();
 
     void on_btnTabela_clicked();
+
+    void on_btnJson_clicked();
 
 private:
     Ui::MainWindow *ui;
