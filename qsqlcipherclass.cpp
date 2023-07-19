@@ -38,25 +38,29 @@ QPair<QStringList, QList<QList<QVariant>>> QSQLCipherClass::executeQuery(const Q
 
     // Busca os nomes das colunas no statement
     int columnCount = sqlite3_column_count(stmt);
-    for (int i = 0; i < columnCount; ++i) {
+    for (int i = 0; i < columnCount; i++)
+    {
         const char* columnName = sqlite3_column_name(stmt, i);
         columnNames.append(QString::fromUtf8(columnName));
     }
 
     // Executa a query e faz fetch dos resultados
-    while (sqlite3_step(stmt) == SQLITE_ROW) {
-
+    while (sqlite3_step(stmt) == SQLITE_ROW)
+    {
         // Criação de uma lista para armazenar os valores de cada linha
         QList<QVariant> row;
-        for (int i = 0; i < columnCount; ++i) {
+        for (int i = 0; i < columnCount; i++)
+        {
             int columnType = sqlite3_column_type(stmt, i);
 
             // Verifica o tipo de dado da coluna e adiciona na lista de valores da linha
-            switch (columnType) {
+            switch (columnType)
+            {
             case SQLITE_INTEGER:
                 row.append(sqlite3_column_int(stmt, i));
                 break;
-            case SQLITE_TEXT: {
+            case SQLITE_TEXT:
+            {
                 const char* text = reinterpret_cast<const char*>(sqlite3_column_text(stmt, i));
                 row.append(QString::fromUtf8(text));
                 break;
@@ -64,7 +68,8 @@ QPair<QStringList, QList<QList<QVariant>>> QSQLCipherClass::executeQuery(const Q
             case SQLITE_FLOAT:
                 row.append(sqlite3_column_double(stmt, i));
                 break;
-            case SQLITE_BLOB: {
+            case SQLITE_BLOB:
+            {
                 int dataSize = sqlite3_column_bytes(stmt, i);
                 const void* blobData = sqlite3_column_blob(stmt, i);
                 row.append(QByteArray(static_cast<const char*>(blobData), dataSize));
@@ -74,7 +79,6 @@ QPair<QStringList, QList<QList<QVariant>>> QSQLCipherClass::executeQuery(const Q
                 row.append(QVariant());
                 break;
             default:
-
                 // Caso precise tratar outros tipos de dados
                 row.append(QVariant());
                 break;
@@ -101,10 +105,11 @@ QStandardItemModel* QSQLCipherClass::prepareModel(const QStringList& columnNames
     model->setHorizontalHeaderLabels(columnNames);
 
     // Preenche o modelo com os dados vindos do resultado da query
-    for (const QList<QVariant>& row : results) {
+    for (const QList<QVariant>& row : results)
+    {
         QList<QStandardItem*> items;
-        for (const QVariant& columnData : row) {
-
+        for (const QVariant& columnData : row)
+        {
             // Cria um novo item do modelo e adiciona à lista de itens
             QStandardItem* item = new QStandardItem(columnData.toString());
             items.append(item);
@@ -146,14 +151,14 @@ QJsonDocument QSQLCipherClass::convertModelToJson(QStandardItemModel* model)
     const int columnCount = model->columnCount();
 
     // Ciclo pelas linhas do modelo
-    for (int row = 0; row < rowCount; ++row) {
-
+    for (int row = 0; row < rowCount; row++)
+    {
         // Cria um objeto JSON para representar uma linha do modelo
         QJsonObject jsonObject;
 
         // Ciclo pelas colunas do modelo
-        for (int col = 0; col < columnCount; ++col) {
-
+        for (int col = 0; col < columnCount; col++)
+        {
             // Obtém o índice do modelo para o campo atual (linha e coluna)
             QModelIndex index = model->index(row, col);
 
