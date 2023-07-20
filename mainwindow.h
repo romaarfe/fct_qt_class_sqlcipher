@@ -4,6 +4,7 @@
 #define SQLITE_HAS_CODEC
 
 #include "qsqlcipherclass.h"
+#include "secondwindow.h"
 #include <iostream>
 #include <sqlcipher/sqlite3.h>
 #include <QDebug>
@@ -13,7 +14,6 @@
 #include <QVariant>
 #include <QFile>
 #include <QObject>
-#include <QWebEngineView>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QTextEdit>
@@ -45,6 +45,8 @@ private slots:
     void on_btnJson_clicked();
 
     void on_btnShowJson_clicked();
+
+    void on_btnNovaJanela_clicked();
 
 private:
     // Ponto de acesso para a interface gráfica

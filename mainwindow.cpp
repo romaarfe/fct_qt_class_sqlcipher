@@ -11,6 +11,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Conectando o clique do botão ao slot on_btnShowJson_clicked
     connect(ui->btnShowJson, &QPushButton::clicked, this, &MainWindow::on_btnShowJson_clicked);
+
+    //connect(ui->btnNovaJanela, &QPushButton::clicked, this, &MainWindow::on_btnNovaJanela_clicked);
 }
 
 MainWindow::~MainWindow()
@@ -47,8 +49,7 @@ void MainWindow::on_btnCriarBD_clicked()
 // Para remover as aspas
 void removeQuotes(QString& str)
 {
-    if (str.startsWith('"') && str.endsWith('"'))
-    {
+    if (str.startsWith('"') && str.endsWith('"')) {
         str.remove(0, 1);
         str.chop(1);
     }
@@ -59,8 +60,7 @@ void printRow(const QStringList& row, const QList<int>& columnWidths)
 {
     QDebug dbg = qDebug().nospace();
     dbg << "|";
-    for (int i = 0; i < row.size(); i++)
-    {
+    for (int i = 0; i < row.size(); i++) {
         dbg << qSetFieldWidth(columnWidths[i]) << row[i];
         dbg << "|";
     }
@@ -79,18 +79,15 @@ void MainWindow::on_btnImprimir_clicked()
 
     // Pega os nomes das colunas já limpos (removendo as aspas, se houver)
     QStringList cleanedColumnNames = columnNames;
-    for (QString& columnName : cleanedColumnNames)
-    {
+    for (QString& columnName : cleanedColumnNames) {
         removeQuotes(columnName);
     }
 
     // Dimensiona o tamanho/espaçamento das/entre as colunas para uma apresentação tabular
     QList<int> columnWidths;
-    for (int i = 0; i < cleanedColumnNames.size(); i++)
-    {
+    for (int i = 0; i < cleanedColumnNames.size(); i++) {
         int maxWidth = cleanedColumnNames.at(i).length();
-        for (const QList<QVariant>& row : results)
-        {
+        for (const QList<QVariant>& row : results) {
             QString cellValue = row.at(i).toString();
             maxWidth = qMax(maxWidth, cellValue.length());
         }
@@ -103,11 +100,9 @@ void MainWindow::on_btnImprimir_clicked()
 
     // Apresenta os dados de forma tabular no terminal através do qDebug()
     qDebug() << "Dados Inseridos:";
-    for (const QList<QVariant>& row : results)
-    {
+    for (const QList<QVariant>& row : results) {
         QStringList rowData;
-        for (const QVariant& columnData : row)
-        {
+        for (const QVariant& columnData : row) {
             rowData.append(columnData.toString());
         }
         printRow(rowData, columnWidths);
@@ -148,8 +143,7 @@ void MainWindow::on_btnJson_clicked()
     // Salvar num ficheiro, enviar pela rede, etc.
     QString fileName = "database.json";
     QFile file(fileName);
-    if (file.open(QIODevice::WriteOnly))
-    {
+    if (file.open(QIODevice::WriteOnly)) {
         file.write(jsonData);
         file.close();
     }
@@ -172,5 +166,12 @@ void MainWindow::on_btnShowJson_clicked()
 
     // Exibindo o JSON no QTextEdit da interface
     ui->textEdit->setPlainText(jsonString);
+}
+
+void MainWindow::on_btnNovaJanela_clicked()
+{
+    // Crie e mostre uma instância da segunda janela
+    SecondWindow *secondWindow = new SecondWindow(this);
+    secondWindow->show();
 }
 

@@ -1,42 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>SecondWindow</class>
+ <widget class="QMainWindow" name="SecondWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>677</width>
-    <height>587</height>
+    <width>672</width>
+    <height>609</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>PRIMEIRA JANELA</string>
+   <string>SEGUNDA JANELA</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="7" column="2">
-     <widget class="QPlainTextEdit" name="textEdit">
-      <property name="font">
-       <font>
-        <bold>true</bold>
-       </font>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="2">
-     <widget class="QPushButton" name="btnImprimir">
-      <property name="font">
-       <font>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>MOSTRAR NO TERMINAL</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
+    <item row="0" column="0">
      <widget class="QPushButton" name="btnCriarBD">
       <property name="font">
        <font>
@@ -48,19 +27,19 @@
       </property>
      </widget>
     </item>
-    <item row="6" column="1">
-     <widget class="QLabel" name="lblResultado">
+    <item row="0" column="1">
+     <widget class="QPushButton" name="btnImprimir">
       <property name="font">
        <font>
         <bold>true</bold>
        </font>
       </property>
       <property name="text">
-       <string>Resultado</string>
+       <string>MOSTRAR NO TERMINAL</string>
       </property>
      </widget>
     </item>
-    <item row="2" column="1" colspan="2">
+    <item row="1" column="0" colspan="2">
      <widget class="QPushButton" name="btnTabela">
       <property name="font">
        <font>
@@ -72,16 +51,7 @@
       </property>
      </widget>
     </item>
-    <item row="7" column="1">
-     <widget class="QTableView" name="tbvTabela">
-      <property name="font">
-       <font>
-        <bold>true</bold>
-       </font>
-      </property>
-     </widget>
-    </item>
-    <item row="5" column="1">
+    <item row="2" column="0">
      <widget class="QPushButton" name="btnJson">
       <property name="font">
        <font>
@@ -93,7 +63,7 @@
       </property>
      </widget>
     </item>
-    <item row="5" column="2">
+    <item row="2" column="1">
      <widget class="QPushButton" name="btnShowJson">
       <property name="font">
        <font>
@@ -105,15 +75,33 @@
       </property>
      </widget>
     </item>
-    <item row="6" column="2">
-     <widget class="QPushButton" name="btnNovaJanela">
+    <item row="3" column="0">
+     <widget class="QLabel" name="lblResultado">
       <property name="font">
        <font>
         <bold>true</bold>
        </font>
       </property>
       <property name="text">
-       <string>SEGUNDA JANELA</string>
+       <string>Resultado</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QTableView" name="tbvTabela">
+      <property name="font">
+       <font>
+        <bold>true</bold>
+       </font>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QPlainTextEdit" name="textEdit">
+      <property name="font">
+       <font>
+        <bold>true</bold>
+       </font>
       </property>
      </widget>
     </item>
