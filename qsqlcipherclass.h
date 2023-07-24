@@ -4,6 +4,8 @@
 // Inclui as bibliotecas necessárias para o funcionamento da classe
 #define SQLITE_HAS_CODEC
 
+#include "qsqliteclass.h"
+#include "qsqlitebaseclass.h"
 #include <iostream>
 #include <sqlcipher/sqlite3.h>
 #include <QString>
@@ -22,13 +24,12 @@
 // Inclui a classe no namespace std para evitar ter que escrever std::
 using namespace std;
 
-class QSQLCipherClass
+class QSQLCipherClass : public QSQLiteBaseClass
 {
 public:
     // Construtor padrão vazio
-    QSQLCipherClass();
+    QSQLCipherClass() {}
 
-    // Construtor que abre a base de dados (com parâmetros)
     QSQLCipherClass(const QString& filename, const QString& password);
 
     void closeDb();
@@ -47,7 +48,9 @@ private:
     sqlite3* dbHandle;
 
     // Nome do ficheiro da base de dados SQLite/SQLCipher
-    QString db;
+    QString dbString;
+
+    QSQLCipherClass *dbCipher;
 
     // Modelo de dados para armazenar os resultados da consulta
     QStandardItemModel* model;

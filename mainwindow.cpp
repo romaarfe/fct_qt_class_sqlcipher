@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-#include "qsqlcipherclass.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -28,22 +27,23 @@ void MainWindow::on_btnCriarBD_clicked()
     QString password = "senha";
 
     // Cria uma instância da classe QSQLCipherClass para interagir com a base de dados
-    QSQLCipherClass db(filename, password);
+    QSQLCipherClass dbCipher(filename, password);
+    db = &dbCipher;
 
     // Execução da query para criar a base de dados e inserir dados
-    db.executeQuery("CREATE TABLE IF NOT EXISTS Heroi (id INTEGER PRIMARY KEY, nome TEXT, sobrenome TEXT)");
+    db->executeQuery("CREATE TABLE IF NOT EXISTS Heroi (id INTEGER PRIMARY KEY, nome TEXT, sobrenome TEXT)");
 
     // Insere dados na tabela Heroi
-    db.executeQuery("INSERT INTO Heroi VALUES(1, 'Luke', 'Skywalker')");
-    db.executeQuery("INSERT INTO Heroi VALUES(2, 'Leia', 'Organa')");
-    db.executeQuery("INSERT INTO Heroi VALUES(3, 'Han', 'Solo')");
-    db.executeQuery("INSERT INTO Heroi VALUES(4, 'Obiwan', 'Kenobi')");
+    db->executeQuery("INSERT INTO Heroi VALUES(1, 'Luke', 'Skywalker')");
+    db->executeQuery("INSERT INTO Heroi VALUES(2, 'Leia', 'Organa')");
+    db->executeQuery("INSERT INTO Heroi VALUES(3, 'Han', 'Solo')");
+    db->executeQuery("INSERT INTO Heroi VALUES(4, 'Obiwan', 'Kenobi')");
 
     // Exibe uma mensagem de sucesso na interface do usuário
     ui->lblResultado->setText("Base de dados criada com sucesso!");
 
     // Fechar a base de dados
-    db.closeDb();
+    db->closeDb();
 }
 
 // Para remover as aspas
@@ -70,10 +70,11 @@ void printRow(const QStringList& row, const QList<int>& columnWidths)
 void MainWindow::on_btnImprimir_clicked()
 {
     // Criação de uma instância da classe QSQLCipherClass para interagir com a base de dados
-    QSQLCipherClass db("database.db", "senha");
+    QSQLCipherClass dbCipher("database.db", "senha");
+    db = &dbCipher;
 
     // Necessário para buscar os resultados da execução da query
-    QPair<QStringList, QList<QList<QVariant>>> queryResult = db.executeQuery("SELECT * FROM Heroi");
+    QPair<QStringList, QList<QList<QVariant>>> queryResult = db->executeQuery("SELECT * FROM Heroi");
     const QStringList& columnNames = queryResult.first;
     const QList<QList<QVariant>>& results = queryResult.second;
 
@@ -107,35 +108,43 @@ void MainWindow::on_btnImprimir_clicked()
         }
         printRow(rowData, columnWidths);
     }
+
+    db->closeDb();
 }
 
 void MainWindow::on_btnTabela_clicked()
 {
+    db = &dbCipher;
+
     // Configuração básica para abertura da base de dados com a classe
     QString filename = "database.db";
     QString password = "senha";
     QString query = "SELECT * FROM Heroi";
 
     // Prepara e exibe a tabela na QTableView da interface
-    model = tabela->prepareAndShowTable(filename, password, query);
+    model = db->prepareAndShowTable(filename, password, query);
 
     // Exibe o modelo na QTableView
     ui->tbvTabela->setModel(model);
 
     // Apresenta a QTableView na interface
     ui->tbvTabela->show();
+
+    db->closeDb();
 }
 
 void MainWindow::on_btnJson_clicked()
 {
+    db = &dbCipher;
+
     // Configuração básica para abertura da base de dados com a classe
     QString filename = "database.db";
     QString password = "senha";
     QString query = "SELECT * FROM Heroi";
 
     // Prepara o modelo e converte-o em JSON
-    QStandardItemModel* model = tabela->prepareAndShowTable(filename, password, query);
-    QJsonDocument jsonDoc = tabela->convertModelToJson(model);
+    model = db->prepareAndShowTable(filename, password, query);
+    QJsonDocument jsonDoc = db->convertModelToJson(model);
 
     // Agora você pode usar o JSON conforme necessário:
     QByteArray jsonData = jsonDoc.toJson();
@@ -147,18 +156,22 @@ void MainWindow::on_btnJson_clicked()
         file.write(jsonData);
         file.close();
     }
+
+    db->closeDb();
 }
 
 void MainWindow::on_btnShowJson_clicked()
 {
+    db = &dbCipher;
+
     // Configuração básica para abertura da base de dados com a classe
     QString filename = "database.db";
     QString password = "senha";
     QString query = "SELECT * FROM Heroi";
 
     // Prepara o modelo e converte-o em JSON
-    QStandardItemModel* model = tabela->prepareAndShowTable(filename, password, query);
-    QJsonDocument jsonDoc = tabela->convertModelToJson(model);
+    model = db->prepareAndShowTable(filename, password, query);
+    QJsonDocument jsonDoc = db->convertModelToJson(model);
 
     // Convertendo o JSON para uma string formatada
     QByteArray jsonData = jsonDoc.toJson(QJsonDocument::Indented);
@@ -166,6 +179,8 @@ void MainWindow::on_btnShowJson_clicked()
 
     // Exibindo o JSON no QTextEdit da interface
     ui->textEdit->setPlainText(jsonString);
+
+    db->closeDb();
 }
 
 void MainWindow::on_btnNovaJanela_clicked()

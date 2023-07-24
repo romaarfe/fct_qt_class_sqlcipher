@@ -1,4 +1,6 @@
 #include "qsqliteclass.h"
+#include "qsqlcipherclass.h"
+#include "qsqlitebaseclass.h"
 
 QSQLiteClass::QSQLiteClass(const QString& filename, const QString& password)
 {

@@ -2,7 +2,9 @@
 #define SECONDWINDOW_H
 
 #include <QMainWindow>
-#include "qsqliteclass.h"   // Inclui o arquivo de cabeçalho que define a classe QSQLiteClass.
+#include "qsqlcipherclass.h"
+#include "qsqliteclass.h"
+#include "qsqlitebaseclass.h"
 #include "secondwindow.h"   // Inclui o próprio ficheiro de cabeçalho (pode ser desnecessário).
 #include <QDebug>
 #include <QApplication>
@@ -51,8 +53,9 @@ private:
     // Modelo para exibir a tabela na QTableView
     QStandardItemModel* model;
 
-    // Ponteiro para o objeto da classe QSQLiteClass.
-    QSQLiteClass* db;
+    QSQLiteBaseClass *db;
+
+    QSQLiteClass dbLite;
 };
 
 #endif // SECONDWINDOW_H
