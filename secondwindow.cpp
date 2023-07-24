@@ -18,22 +18,23 @@ SecondWindow::~SecondWindow()
 void SecondWindow::on_btnCriarBD_clicked()
 {
     // Cria uma instância da classe QSQLiteClass para interagir com a base de dados
-    QSQLiteClass db("baseDeDados.db", "");
+    QSQLiteClass dbLite("baseDeDados.db", "");
+    db = &dbLite;
 
     // Execução da query para criar a base de dados e inserir dados
-    db.executeQuery("CREATE TABLE IF NOT EXISTS Vilao (id INTEGER PRIMARY KEY, nome TEXT, sobrenome TEXT)");
+    db->executeQuery("CREATE TABLE IF NOT EXISTS Vilao (id INTEGER PRIMARY KEY, nome TEXT, sobrenome TEXT)");
 
     // Insere dados na tabela Vilao
-    db.executeQuery("INSERT INTO Vilao VALUES(5, 'Imperador', 'Palpatine')");
-    db.executeQuery("INSERT INTO Vilao VALUES(6, 'Jabba', 'The Hutt')");
-    db.executeQuery("INSERT INTO Vilao VALUES(7, 'Anakin', 'Skywalker')");
-    db.executeQuery("INSERT INTO Vilao VALUES(8, 'Boba', 'Fett')");
+    db->executeQuery("INSERT INTO Vilao VALUES(5, 'Imperador', 'Palpatine')");
+    db->executeQuery("INSERT INTO Vilao VALUES(6, 'Jabba', 'The Hutt')");
+    db->executeQuery("INSERT INTO Vilao VALUES(7, 'Anakin', 'Skywalker')");
+    db->executeQuery("INSERT INTO Vilao VALUES(8, 'Boba', 'Fett')");
 
     // Exibe uma mensagem de sucesso na interface do usuário
     ui->lblResultado->setText("Base de dados criada com sucesso!");
 
     // Fechar a base de dados
-    db.closeDb();
+    db->closeDb();
 }
 
 // Método auxiliar para imprimir dados do modelo na saída de depuração (qDebug)
@@ -65,17 +66,22 @@ void SecondWindow::printModelData(QStandardItemModel* model)
 
 void SecondWindow::on_btnImprimir_clicked()
 {
+    db = &dbLite;
 
     // Executa a consulta e obtém o modelo com os resultados
     QStandardItemModel* model = db->prepareAndShowTable("baseDeDados.db", "", "SELECT * FROM Vilao");
 
     // Use a função auxiliar para imprimir os dados no terminal
     printModelData(model);
+
+    db->closeDb();
 }
 
 
 void SecondWindow::on_btnTabela_clicked()
 {
+    db = &dbLite;
+
     // Configuração básica para abertura da base de dados com a classe
     QString filename = "baseDeDados.db";
     QString password = "";
@@ -89,11 +95,15 @@ void SecondWindow::on_btnTabela_clicked()
 
     // Apresenta a QTableView na interface
     ui->tbvTabela->show();
+
+    db->closeDb();
 }
 
 
 void SecondWindow::on_btnJson_clicked()
 {
+    db = &dbLite;
+
     // Configuração básica para abertura da base de dados com a classe
     QString filename = "baseDeDados.db";
     QString password = "";
@@ -113,10 +123,14 @@ void SecondWindow::on_btnJson_clicked()
         file.write(jsonData);
         file.close();
     }
+
+    db->closeDb();
 }
 
 void SecondWindow::on_btnShowJson_clicked()
 {
+    db = &dbLite;
+
     // Configuração básica para abertura da base de dados com a classe
     QString filename = "baseDeDados.db";
     QString password = "";
@@ -132,5 +146,7 @@ void SecondWindow::on_btnShowJson_clicked()
 
     // Exibindo o JSON no QTextEdit da interface
     ui->textEdit->setPlainText(jsonString);
+
+    db->closeDb();
 }
 

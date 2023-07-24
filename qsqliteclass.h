@@ -1,6 +1,11 @@
 #ifndef QSQLITECLASS_H
 #define QSQLITECLASS_H
 
+// Inclui as bibliotecas necessárias para o funcionamento da classe
+#define SQLITE_HAS_CODEC
+
+#include "qsqlcipherclass.h"
+#include "qsqlitebaseclass.h"
 #include <QString>
 #include <QDebug>
 #include <QStandardItemModel>
@@ -24,11 +29,11 @@ using namespace std;
 
 // Diretiva de pré-processador que evita inclusões múltiplas do arquivo de cabeçalho.
 // Protege contra erros de duplicação de definições.
-class QSQLiteClass
+class QSQLiteClass : public QSQLiteBaseClass
 {
 public:
     // Construtor padrão.
-    QSQLiteClass();
+    QSQLiteClass() {}
 
     // Construtor sobrecarregado para receber o nome do ficheiro e senha da base de dados.
     QSQLiteClass(const QString& filename, const QString& password);

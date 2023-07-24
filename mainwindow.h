@@ -5,6 +5,8 @@
 #define SQLITE_HAS_CODEC
 
 #include "qsqlcipherclass.h"
+#include "qsqliteclass.h"
+#include "qsqlitebaseclass.h"
 #include "secondwindow.h"
 #include <iostream>
 #include <sqlcipher/sqlite3.h>
@@ -18,7 +20,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QTextEdit>
-
+#include <exception>
 
 using namespace std;
 
@@ -53,10 +55,10 @@ private:
     // Ponto de acesso para a interface gráfica
     Ui::MainWindow *ui;
 
-    // Modelo para exibir a tabela na QTableView
-    QStandardItemModel* model;
+    QSQLiteBaseClass *db;
 
-    // Objeto para manipulação da base de dados e conversão para JSON
-    QSQLCipherClass* tabela;
+    QSQLCipherClass dbCipher;
+
+    QStandardItemModel *model;
 };
 #endif // MAINWINDOW_H

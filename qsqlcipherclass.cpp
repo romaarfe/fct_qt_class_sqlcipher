@@ -1,13 +1,15 @@
 #include "qsqlcipherclass.h"
+#include "qsqlitebaseclass.h"
+#include "qsqliteclass.h"
 
 // Construtor para abrir a base de dados e inserir a palavra passe
 QSQLCipherClass::QSQLCipherClass(const QString& filename, const QString& password)
 {
     model = new QStandardItemModel();
-    db = filename;
+    dbString = filename;
 
     // Abre a base de dados SQLite/SQLCipher com a chave de criptografia (password)
-    sqlite3_open(db.toStdString().c_str(), &dbHandle);
+    sqlite3_open(dbString.toStdString().c_str(), &dbHandle);
     sqlite3_key(dbHandle, password.toStdString().c_str(), password.length());
 }
 
@@ -126,10 +128,10 @@ QStandardItemModel* QSQLCipherClass::prepareModel(const QStringList& columnNames
 QStandardItemModel* QSQLCipherClass::prepareAndShowTable(const QString& filename, const QString& password, const QString& query)
 {
     // Cria um novo objeto QSQLCipherClass
-    QSQLCipherClass db(filename, password);
+    QSQLCipherClass dbCipher(filename, password);
 
     // Executa a consulta e obtém os resultados
-    QPair<QStringList, QList<QList<QVariant>>> queryResult = db.executeQuery(query);
+    QPair<QStringList, QList<QList<QVariant>>> queryResult = dbCipher.executeQuery(query);
     const QStringList& columnNames = queryResult.first;
     const QList<QList<QVariant>>& results = queryResult.second;
 
