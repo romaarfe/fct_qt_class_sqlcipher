@@ -21,7 +21,7 @@ void QSQLiteClass::closeDb()
 
 QPair<QStringList, QList<QList<QVariant>>> QSQLiteClass::executeQuery(const QString& query)
 {
-    // Abre a conexão com o banco de dados
+    // Abre a conexão com a base de dados
     if (!db.isOpen())
     {
         db.open();
@@ -90,7 +90,7 @@ QStandardItemModel* QSQLiteClass::prepareModel(const QStringList& columnNames, c
 
 QStandardItemModel* QSQLiteClass::prepareAndShowTable(const QString& filename, const QString& password, const QString& query)
 {
-    // Configuração da conexão com o banco de dados
+    // Configuração da conexão com a base de dados
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName(filename);
     db.setPassword(password);
@@ -136,7 +136,7 @@ QStandardItemModel* QSQLiteClass::prepareAndShowTable(const QString& filename, c
     // Prepara o modelo a partir dos resultados da consulta
     QStandardItemModel* model = prepareModel(columnNames, results);
 
-    // Feche a conexão com o banco de dados
+    // Fecha a conexão com a base de dados
     db.close();
 
     // Retorna o modelo preenchido com os dados da consulta

@@ -1,27 +1,29 @@
-#include "secondwindow.h"
-#include "ui_secondwindow.h"
+#include "secondwindow.h"   // Inclui o ficheiro de cabeçalho da classe SecondWindow.
+#include "ui_secondwindow.h"    // Inclui o ficheiro de cabeçalho gerado automaticamente pelo Qt para a interface gráfica.
 
+// Construtor da classe SecondWindow
 SecondWindow::SecondWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::SecondWindow)
+    ui(new Ui::SecondWindow)    // Inicializa a interface gráfica (ui) da janela.
 {
-    ui->setupUi(this);
+    ui->setupUi(this);  // Configura a interface gráfica da janela (definida no arquivo .ui).
 }
 
+// Destrutor da classe SecondWindowS
 SecondWindow::~SecondWindow()
 {
-    delete ui;
+    delete ui;  // Libera a memória ocupada pela interface gráfica (ui) da janela.
 }
 
 void SecondWindow::on_btnCriarBD_clicked()
 {
-    // Cria uma instância da classe QSQLCipherClass para interagir com a base de dados
+    // Cria uma instância da classe QSQLiteClass para interagir com a base de dados
     QSQLiteClass db("baseDeDados.db", "");
 
     // Execução da query para criar a base de dados e inserir dados
     db.executeQuery("CREATE TABLE IF NOT EXISTS Vilao (id INTEGER PRIMARY KEY, nome TEXT, sobrenome TEXT)");
 
-    // Insere dados na tabela Heroi
+    // Insere dados na tabela Vilao
     db.executeQuery("INSERT INTO Vilao VALUES(5, 'Imperador', 'Palpatine')");
     db.executeQuery("INSERT INTO Vilao VALUES(6, 'Jabba', 'The Hutt')");
     db.executeQuery("INSERT INTO Vilao VALUES(7, 'Anakin', 'Skywalker')");
@@ -34,6 +36,7 @@ void SecondWindow::on_btnCriarBD_clicked()
     db.closeDb();
 }
 
+// Método auxiliar para imprimir dados do modelo na saída de depuração (qDebug)
 void SecondWindow::printModelData(QStandardItemModel* model)
 {
     if (!model)
