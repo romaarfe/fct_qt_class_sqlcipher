@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+// Inclui as bibliotecas necessárias para o funcionamento da classe
 #define SQLITE_HAS_CODEC
 
 #include "qsqlcipherclass.h"

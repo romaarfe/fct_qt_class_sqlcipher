@@ -33,13 +33,13 @@ public:
 
     void closeDb();
 
-    // Função para executar uma consulta SQL e obter os resultados
+    // Método para executar uma consulta SQL e obter os resultados
     QPair<QStringList, QList<QList<QVariant>>> executeQuery(const QString& query);
 
-    // Função para executar uma consulta e mostrar o resultado numa tabela
+    // Método para executar uma consulta e mostrar o resultado numa tabela
     QStandardItemModel* prepareAndShowTable(const QString& databasePath, const QString& password, const QString& query);
 
-    // Função para converter um modelo de dados em formato JSON
+    // Método para converter um modelo de dados em formato JSON
     QJsonDocument convertModelToJson(QStandardItemModel* model);
 
 private:
@@ -52,10 +52,10 @@ private:
     // Modelo de dados para armazenar os resultados da consulta
     QStandardItemModel* model;
 
-    // Função para obter o apontador para a base de dados
+    // Método interno para obter o apontador para a base de dados
     sqlite3* getDbHandle() const;
 
-    // Função para preparar um modelo de dados a partir dos resultados da consulta
+    // Método interno para preparar um modelo de dados a partir dos resultados da consulta
     QStandardItemModel* prepareModel(const QStringList& columnNames, const QList<QList<QVariant>>& results);
 };
 

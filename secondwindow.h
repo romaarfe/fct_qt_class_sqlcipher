@@ -2,8 +2,8 @@
 #define SECONDWINDOW_H
 
 #include <QMainWindow>
-#include "qsqliteclass.h"
-#include "secondwindow.h"
+#include "qsqliteclass.h"   // Inclui o arquivo de cabeçalho que define a classe QSQLiteClass.
+#include "secondwindow.h"   // Inclui o próprio ficheiro de cabeçalho (pode ser desnecessário).
 #include <QDebug>
 #include <QApplication>
 #include <QMainWindow>
@@ -22,6 +22,7 @@ class SecondWindow;
 
 class SecondWindow : public QMainWindow
 {
+    // Macro que indica que essa classe contém slots (métodos que podem ser conectados a sinais).
     Q_OBJECT
 
 public:
@@ -29,6 +30,7 @@ public:
     ~SecondWindow();
 
 private slots:
+    // Slots para responder a eventos de clique em botões
     void on_btnCriarBD_clicked();
 
     void on_btnImprimir_clicked();
@@ -40,13 +42,16 @@ private slots:
     void on_btnShowJson_clicked();
 
 private:
+    // Ponteiro para o objeto de interface gráfica.
     Ui::SecondWindow *ui;
 
+    // Função auxiliar para imprimir dados do modelo.
     void printModelData(QStandardItemModel* model);
 
     // Modelo para exibir a tabela na QTableView
     QStandardItemModel* model;
 
+    // Ponteiro para o objeto da classe QSQLiteClass.
     QSQLiteClass* db;
 };
 
