@@ -12,7 +12,7 @@ QSQLiteClass::QSQLiteClass(const QString& filename, const QString& password)
     db.setPassword(password);
 }
 
-// Função para fechar a conexão com a base de dados
+// Método para fechar a conexão com a base de dados
 void QSQLiteClass::closeDb()
 {
     if (db.isOpen())

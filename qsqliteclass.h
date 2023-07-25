@@ -38,19 +38,21 @@ public:
     // Construtor sobrecarregado para receber o nome do ficheiro e senha da base de dados.
     QSQLiteClass(const QString& filename, const QString& password);
 
+    ~QSQLiteClass() override {}
+
     // Método para fechar a conexão com a base de dados.
-    void closeDb();
+    void closeDb() override;
 
     // Método para executar uma consulta SQL na base de dados.
     // Retorna um par contendo uma lista de nomes de colunas e uma lista de linhas com resultados da consulta.
-    QPair<QStringList, QList<QList<QVariant>>> executeQuery(const QString& query);
+    QPair<QStringList, QList<QList<QVariant>>> executeQuery(const QString& query) override;
 
     // Método para preparar e exibir uma tabela a partir do caminho da base de dados, senha e consulta SQL.
     // Retorna um modelo de exibição de tabela.
-    QStandardItemModel* prepareAndShowTable(const QString& databasePath, const QString& password, const QString& query);
+    QStandardItemModel* prepareAndShowTable(const QString& databasePath, const QString& password, const QString& query) override;
 
     // Método para converter um modelo de exibição de tabela em um documento JSON.
-    QJsonDocument convertModelToJson(QStandardItemModel* model);
+    QJsonDocument convertModelToJson(QStandardItemModel* model) override;
 
 private:
     // Objeto de conexão com a base de dados SQLite.

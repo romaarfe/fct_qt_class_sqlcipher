@@ -4,10 +4,10 @@
 // Inclui as bibliotecas necessárias para o funcionamento da classe
 #define SQLITE_HAS_CODEC
 
-#include "qsqliteclass.h"
-#include "qsqlitebaseclass.h"
+#include "qsqliteclass.h"   // Inclui a definição da classe QSQLiteClass
+#include "qsqlitebaseclass.h"   // Inclui a definição da classe QSQLiteBaseClass
 #include <iostream>
-#include <sqlcipher/sqlite3.h>
+#include <sqlcipher/sqlite3.h>  // Inclui a biblioteca SQLite com suporte a SQLCipher
 #include <QString>
 #include <QDebug>
 #include <QStandardItemModel>
@@ -30,18 +30,22 @@ public:
     // Construtor padrão vazio
     QSQLCipherClass() {}
 
+    // Construtor com parâmetros
     QSQLCipherClass(const QString& filename, const QString& password);
 
-    void closeDb();
+    ~QSQLCipherClass() override {}
+
+    // Método para fechar a base de dados
+    void closeDb() override;
 
     // Método para executar uma consulta SQL e obter os resultados
-    QPair<QStringList, QList<QList<QVariant>>> executeQuery(const QString& query);
+    QPair<QStringList, QList<QList<QVariant>>> executeQuery(const QString& query) override;
 
     // Método para executar uma consulta e mostrar o resultado numa tabela
-    QStandardItemModel* prepareAndShowTable(const QString& databasePath, const QString& password, const QString& query);
+    QStandardItemModel* prepareAndShowTable(const QString& databasePath, const QString& password, const QString& query) override;
 
     // Método para converter um modelo de dados em formato JSON
-    QJsonDocument convertModelToJson(QStandardItemModel* model);
+    QJsonDocument convertModelToJson(QStandardItemModel* model) override;
 
 private:
     // Apontador para a base de dados SQLite/SQLCipher
@@ -50,6 +54,7 @@ private:
     // Nome do ficheiro da base de dados SQLite/SQLCipher
     QString dbString;
 
+    // Declaração um objeto da classe QSQLCipherClass
     QSQLCipherClass *dbCipher;
 
     // Modelo de dados para armazenar os resultados da consulta

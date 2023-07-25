@@ -4,8 +4,9 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+    , dbCipher("database.db", "senha") // Para já instanciar o construtor com os argumentos
 {
-    // Configura a interface de utilizador definida no arquivo .ui
+    // Configura a interface de utilizador definida no ficheiro .ui
     ui->setupUi(this);
 
     // Conectando o clique do botão ao slot on_btnShowJson_clicked
@@ -16,18 +17,16 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    // Libera a memória alocada para a interface de usuário
+    // Libera a memória alocada para a interface de utilizador
     delete ui;
 }
 
 void MainWindow::on_btnCriarBD_clicked()
 {
-    // Configuração básica para abertura da base de dados com a classe
-    QString filename = "database.db";
-    QString password = "senha";
-
-    // Cria uma instância da classe QSQLCipherClass para interagir com a base de dados
-    QSQLCipherClass dbCipher(filename, password);
+    // Atribui o endereço da instância de QSQLCipherClass (dbCipher) ao apontador 'db'.
+    // Neste momento, 'db' está apontando para a mesma instância de 'dbCipher', e será usado para
+    // acessar os métodos e atributos da classe QSQLCipherClass nesta instância
+    // 'db' é do tipo da classe base QSQLiteBaseClass.
     db = &dbCipher;
 
     // Execução da query para criar a base de dados e inserir dados
@@ -39,7 +38,7 @@ void MainWindow::on_btnCriarBD_clicked()
     db->executeQuery("INSERT INTO Heroi VALUES(3, 'Han', 'Solo')");
     db->executeQuery("INSERT INTO Heroi VALUES(4, 'Obiwan', 'Kenobi')");
 
-    // Exibe uma mensagem de sucesso na interface do usuário
+    // Exibe uma mensagem de sucesso na interface do utilizador
     ui->lblResultado->setText("Base de dados criada com sucesso!");
 
     // Fechar a base de dados
@@ -69,12 +68,10 @@ void printRow(const QStringList& row, const QList<int>& columnWidths)
 
 void MainWindow::on_btnImprimir_clicked()
 {
-    // Criação de uma instância da classe QSQLCipherClass para interagir com a base de dados
-    QSQLCipherClass dbCipher("database.db", "senha");
-    db = &dbCipher;
+    QSQLCipherClass dbCipherTerminal("database.db", "senha");
 
     // Necessário para buscar os resultados da execução da query
-    QPair<QStringList, QList<QList<QVariant>>> queryResult = db->executeQuery("SELECT * FROM Heroi");
+    QPair<QStringList, QList<QList<QVariant>>> queryResult = dbCipherTerminal.executeQuery("SELECT * FROM Heroi");
     const QStringList& columnNames = queryResult.first;
     const QList<QList<QVariant>>& results = queryResult.second;
 
@@ -109,7 +106,8 @@ void MainWindow::on_btnImprimir_clicked()
         printRow(rowData, columnWidths);
     }
 
-    db->closeDb();
+    // Fechar a base de dados
+    dbCipherTerminal.closeDb();
 }
 
 void MainWindow::on_btnTabela_clicked()
@@ -130,6 +128,7 @@ void MainWindow::on_btnTabela_clicked()
     // Apresenta a QTableView na interface
     ui->tbvTabela->show();
 
+    // Fechar a base de dados
     db->closeDb();
 }
 
@@ -157,6 +156,7 @@ void MainWindow::on_btnJson_clicked()
         file.close();
     }
 
+    // Fechar a base de dados
     db->closeDb();
 }
 
@@ -180,6 +180,7 @@ void MainWindow::on_btnShowJson_clicked()
     // Exibindo o JSON no QTextEdit da interface
     ui->textEdit->setPlainText(jsonString);
 
+    // Fechar a base de dados
     db->closeDb();
 }
 
