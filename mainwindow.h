@@ -4,12 +4,12 @@
 // Inclui as bibliotecas necessárias para o funcionamento da classe
 #define SQLITE_HAS_CODEC
 
-#include "qsqlcipherclass.h"
-#include "qsqliteclass.h"
-#include "qsqlitebaseclass.h"
-#include "secondwindow.h"
+#include "qsqlcipherclass.h"    // Inclui a definição da classe QSQLCipherClass
+#include "qsqliteclass.h"   // Inclui a definição da classe QSQLiteClass
+#include "qsqlitebaseclass.h"   // Inclui a definição da classe QSQLiteBaseClass
+#include "secondwindow.h"   // Inclui a definição da classe SecondWindow
 #include <iostream>
-#include <sqlcipher/sqlite3.h>
+#include <sqlcipher/sqlite3.h>  // Inclui a biblioteca SQLite com suporte a SQLCipher
 #include <QDebug>
 #include <QApplication>
 #include <QMainWindow>
@@ -20,7 +20,6 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QTextEdit>
-#include <exception>
 
 using namespace std;
 
@@ -55,10 +54,13 @@ private:
     // Ponto de acesso para a interface gráfica
     Ui::MainWindow *ui;
 
+    // Apontador para objeto da classe QSQLiteBaseClass
     QSQLiteBaseClass *db;
 
+    // Objeto da classe QSQLCipherClass
     QSQLCipherClass dbCipher;
 
+    // Apontador para objeto do tipo QStandardItemModel
     QStandardItemModel *model;
 };
 #endif // MAINWINDOW_H

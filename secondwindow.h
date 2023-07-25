@@ -44,7 +44,7 @@ private slots:
     void on_btnShowJson_clicked();
 
 private:
-    // Ponteiro para o objeto de interface gráfica.
+    // Apontador para o objeto de interface gráfica.
     Ui::SecondWindow *ui;
 
     // Função auxiliar para imprimir dados do modelo.
@@ -53,8 +53,10 @@ private:
     // Modelo para exibir a tabela na QTableView
     QStandardItemModel* model;
 
+    // Apontador para a classe base para acesso a bases de dados SQLite.
     QSQLiteBaseClass *db;
 
+    // Instância da classe para acesso a bases de dados SQLite.
     QSQLiteClass dbLite;
 };
 

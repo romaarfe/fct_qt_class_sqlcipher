@@ -2,9 +2,11 @@
 #include "ui_secondwindow.h"    // Inclui o ficheiro de cabeçalho gerado automaticamente pelo Qt para a interface gráfica.
 
 // Construtor da classe SecondWindow
-SecondWindow::SecondWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::SecondWindow)    // Inicializa a interface gráfica (ui) da janela.
+SecondWindow::SecondWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::SecondWindow)    // Inicializa a interface gráfica (ui) da janela.
+    , dbLite("baseDeDados.db", "")
+
 {
     ui->setupUi(this);  // Configura a interface gráfica da janela (definida no arquivo .ui).
 }
@@ -18,7 +20,6 @@ SecondWindow::~SecondWindow()
 void SecondWindow::on_btnCriarBD_clicked()
 {
     // Cria uma instância da classe QSQLiteClass para interagir com a base de dados
-    QSQLiteClass dbLite("baseDeDados.db", "");
     db = &dbLite;
 
     // Execução da query para criar a base de dados e inserir dados
@@ -30,7 +31,7 @@ void SecondWindow::on_btnCriarBD_clicked()
     db->executeQuery("INSERT INTO Vilao VALUES(7, 'Anakin', 'Skywalker')");
     db->executeQuery("INSERT INTO Vilao VALUES(8, 'Boba', 'Fett')");
 
-    // Exibe uma mensagem de sucesso na interface do usuário
+    // Exibe uma mensagem de sucesso na interface do utilizador
     ui->lblResultado->setText("Base de dados criada com sucesso!");
 
     // Fechar a base de dados
