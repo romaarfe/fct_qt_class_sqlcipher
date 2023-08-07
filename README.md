@@ -8,7 +8,8 @@
 - [x] Criação de classe derivada para trabalhar com SQLite (QSQLite)
 - [x] Criação de classe derivada para trabalhar com SQLCipher
 - [x] Criação de classe base abstrata para utilizar as duas derivadas através de herança
-- [x] Criação de interface/ui
+- [x] Permitir fácil migração do apontador entre os dois tipos de base de dados
+- [x] Criação de interface/ui para testes
 - [x] Implementação do código associado
 - [x] Criar base de dados com SQLite
 - [x] Criar base de dados com SQLCipher
@@ -18,7 +19,7 @@
 - [x] Apresentação do conteúdo do ficheiro JSON numa QListView
 
 ---
-#### 🔧 FERRAMENTAS:
+#### 🔧 FERRAMENTAS / TECNOLOGIAS:
 
 - C++
 - CMake
