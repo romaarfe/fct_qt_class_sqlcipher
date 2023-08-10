@@ -1,0 +1,22 @@
+[
+    {
+        "id": "5",
+        "nome": "Imperador",
+        "sobrenome": "Palpatine"
+    },
+    {
+        "id": "6",
+        "nome": "Jabba",
+        "sobrenome": "The Hutt"
+    },
+    {
+        "id": "7",
+        "nome": "Anakin",
+        "sobrenome": "Skywalker"
+    },
+    {
+        "id": "8",
+        "nome": "Boba",
+        "sobrenome": "Fett"
+    }
+]
